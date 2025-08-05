@@ -30,7 +30,7 @@ class TaskServices {
     return await FirebaseFirestore.instance
         .collection('taskCollection')
         .doc(taskID)
-        .update({'isComplete': true});
+        .update({'isCompleted': true});
   }
 
   ///Get All Task
