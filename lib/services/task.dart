@@ -4,9 +4,13 @@ import 'package:flutter_b21_firebase/models/task.dart';
 class TaskServices {
   ///Create Task
   Future createTask(TaskModel model) async {
+    DocumentReference documentReference = FirebaseFirestore.instance
+        .collection('taskCollection')
+        .doc();
     return await FirebaseFirestore.instance
         .collection('taskCollection')
-        .add(model.toJson());
+        .doc(documentReference.id)
+        .set(model.toJson(documentReference.id));
   }
 
   ///Update Task
@@ -26,11 +30,14 @@ class TaskServices {
   }
 
   ///Mark task as Complete
-  Future markTaskAsComplete(String taskID) async {
+  Future markTaskAsComplete({
+    required String taskID,
+    required bool isCompleted,
+  }) async {
     return await FirebaseFirestore.instance
         .collection('taskCollection')
         .doc(taskID)
-        .update({'isCompleted': true});
+        .update({'isCompleted': isCompleted});
   }
 
   ///Get All Task

@@ -6,7 +6,6 @@ import 'dart:convert';
 
 TaskModel taskModelFromJson(String str) => TaskModel.fromJson(json.decode(str));
 
-String taskModelToJson(TaskModel data) => json.encode(data.toJson());
 
 class TaskModel {
   final String? docId;
@@ -34,8 +33,8 @@ class TaskModel {
     createdAt: json["createdAt"],
   );
 
-  Map<String, dynamic> toJson(String? image) => {
-    "docID": docId,
+  Map<String, dynamic> toJson(String taskID) => {
+    "docID": taskID,
     "title": title,
     "description": description,
     "image": image,
