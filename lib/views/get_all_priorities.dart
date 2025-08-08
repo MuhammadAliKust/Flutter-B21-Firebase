@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_b21_firebase/models/priority.dart';
 import 'package:flutter_b21_firebase/services/priority.dart';
 import 'package:flutter_b21_firebase/views/creaet_priority.dart';
+import 'package:flutter_b21_firebase/views/priority_task.dart';
 import 'package:flutter_b21_firebase/views/update_priority.dart';
 import 'package:provider/provider.dart';
 
@@ -70,6 +71,17 @@ class GetAllPrioritiesView extends StatelessWidget {
                         );
                       },
                       icon: Icon(Icons.edit, color: Colors.blue),
+                    ), IconButton(
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                PriorityTaskView(model: priorityList[i]),
+                          ),
+                        );
+                      },
+                      icon: Icon(Icons.arrow_forward, color: Colors.blue),
                     ),
                   ],
                 ),

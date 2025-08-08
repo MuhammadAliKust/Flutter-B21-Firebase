@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_b21_firebase/models/priority.dart';
 import 'package:flutter_b21_firebase/models/task.dart';
+import 'package:flutter_b21_firebase/services/priority.dart';
 import 'package:flutter_b21_firebase/services/task.dart';
 
 class CreateTaskView extends StatefulWidget {
@@ -13,6 +15,18 @@ class _CreateTaskViewState extends State<CreateTaskView> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   bool isLoading = false;
+  List<PriorityModel> priorityList = [];
+  PriorityModel? _selectedPriority;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    PriorityServices().getAllPriorities().first.then((val) {
+      priorityList = val;
+      setState(() {});
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +36,19 @@ class _CreateTaskViewState extends State<CreateTaskView> {
         children: [
           TextField(controller: titleController),
           TextField(controller: descriptionController),
+          SizedBox(height: 20),
+          DropdownButton(
+            items: priorityList.map((e) {
+              return DropdownMenuItem(value: e, child: Text(e.name.toString()));
+            }).toList(),
+            isExpanded: true,
+            value: _selectedPriority,
+            hint: Text("Select Priority"),
+            onChanged: (val) {
+              _selectedPriority = val;
+              setState(() {});
+            },
+          ),
           SizedBox(height: 20),
           isLoading
               ? Center(child: CircularProgressIndicator())
@@ -48,6 +75,7 @@ class _CreateTaskViewState extends State<CreateTaskView> {
                               title: titleController.text,
                               description: descriptionController.text,
                               isCompleted: false,
+                              priorityID: _selectedPriority!.docId.toString(),
                               createdAt: DateTime.now().millisecondsSinceEpoch,
                             ),
                           )
