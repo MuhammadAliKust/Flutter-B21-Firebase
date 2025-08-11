@@ -71,7 +71,8 @@ class GetAllPrioritiesView extends StatelessWidget {
                         );
                       },
                       icon: Icon(Icons.edit, color: Colors.blue),
-                    ), IconButton(
+                    ),
+                    IconButton(
                       onPressed: () async {
                         Navigator.push(
                           context,
