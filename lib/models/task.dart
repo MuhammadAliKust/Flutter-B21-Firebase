@@ -6,7 +6,6 @@ import 'dart:convert';
 
 TaskModel taskModelFromJson(String str) => TaskModel.fromJson(json.decode(str));
 
-
 class TaskModel {
   final String? docId;
   final String? title;
