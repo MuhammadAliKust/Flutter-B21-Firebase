@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_b21_firebase/models/user.dart';
 import 'package:flutter_b21_firebase/services/auth.dart';
+import 'package:flutter_b21_firebase/services/user.dart';
 import 'package:flutter_b21_firebase/views/login.dart';
 
 class RegisterView extends StatefulWidget {
@@ -12,6 +14,9 @@ class RegisterView extends StatefulWidget {
 class _RegisterViewState extends State<RegisterView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController pwdController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   bool isLoading = false;
 
   @override
@@ -20,8 +25,30 @@ class _RegisterViewState extends State<RegisterView> {
       appBar: AppBar(title: Text("Register")),
       body: Column(
         children: [
-          TextField(controller: emailController),
-          TextField(controller: pwdController),
+          TextField(
+            controller: nameController,
+            decoration: InputDecoration(label: Text("Name")),
+          ),
+          TextField(
+            controller: phoneController,
+
+            decoration: InputDecoration(label: Text("Phone")),
+          ),
+          TextField(
+            controller: addressController,
+
+            decoration: InputDecoration(label: Text("Address")),
+          ),
+          TextField(
+            controller: emailController,
+
+            decoration: InputDecoration(label: Text("Email")),
+          ),
+          TextField(
+            controller: pwdController,
+
+            decoration: InputDecoration(label: Text("Pwd")),
+          ),
           SizedBox(height: 20),
           isLoading
               ? Center(child: CircularProgressIndicator())
@@ -47,7 +74,18 @@ class _RegisterViewState extends State<RegisterView> {
                             email: emailController.text,
                             password: pwdController.text,
                           )
-                          .then((val) {
+                          .then((val) async {
+                            await UserServices().createUser(
+                              UserModel(
+                                docId: val.uid.toString(),
+                                name: nameController.text,
+                                phone: phoneController.text,
+                                email: emailController.text,
+                                address: addressController.text,
+                                createdAt:
+                                    DateTime.now().millisecondsSinceEpoch,
+                              ),
+                            );
                             showDialog(
                               context: context,
                               builder: (context) {
@@ -81,10 +119,9 @@ class _RegisterViewState extends State<RegisterView> {
                       ).showSnackBar(SnackBar(content: Text(e.toString())));
                     }
                   },
-                  child: Text("Login"),
+                  child: Text("Register"),
                 ),
           SizedBox(height: 20),
-
         ],
       ),
     );

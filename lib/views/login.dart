@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_b21_firebase/providers/user.dart';
 import 'package:flutter_b21_firebase/services/auth.dart';
+import 'package:flutter_b21_firebase/services/user.dart';
+import 'package:flutter_b21_firebase/views/profile.dart';
 import 'package:flutter_b21_firebase/views/register.dart';
 import 'package:flutter_b21_firebase/views/reset_pwd.dart';
+import 'package:provider/provider.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -17,6 +21,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(title: Text("Login")),
       body: Column(
@@ -48,7 +53,12 @@ class _LoginViewState extends State<LoginView> {
                             email: emailController.text,
                             password: pwdController.text,
                           )
-                          .then((val) {
+                          .then((val) async {
+                            await UserServices().getUser(val.uid).then((
+                              userData,
+                            ) {
+                              user.setUser(userData);
+                            });
                             isLoading = false;
                             setState(() {});
                             showDialog(
@@ -61,7 +71,14 @@ class _LoginViewState extends State<LoginView> {
                                   ),
                                   actions: [
                                     TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ProfileDemo(),
+                                          ),
+                                        );
+                                      },
                                       child: Text("Okay"),
                                     ),
                                   ],
