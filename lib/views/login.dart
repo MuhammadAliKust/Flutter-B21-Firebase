@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_b21_firebase/providers/user.dart';
 import 'package:flutter_b21_firebase/services/auth.dart';
 import 'package:flutter_b21_firebase/services/user.dart';
+import 'package:flutter_b21_firebase/views/get_all_task.dart';
 import 'package:flutter_b21_firebase/views/profile.dart';
 import 'package:flutter_b21_firebase/views/register.dart';
 import 'package:flutter_b21_firebase/views/reset_pwd.dart';
@@ -75,7 +76,8 @@ class _LoginViewState extends State<LoginView> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => ProfileDemo(),
+                                            builder: (context) =>
+                                                GetAllTaskView(),
                                           ),
                                         );
                                       },

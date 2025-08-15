@@ -12,6 +12,7 @@ class TaskModel {
   final String? description;
   final String? image;
   final String? priorityID;
+  final String? userID;
   final bool? isCompleted;
   final int? createdAt;
 
@@ -21,6 +22,7 @@ class TaskModel {
     this.description,
     this.priorityID,
     this.image,
+    this.userID,
     this.isCompleted,
     this.createdAt,
   });
@@ -32,6 +34,7 @@ class TaskModel {
     image: json["image"],
     isCompleted: json["isCompleted"],
     priorityID: json["priorityID"],
+    userID: json["userID"],
     createdAt: json["createdAt"],
   );
 
@@ -42,6 +45,7 @@ class TaskModel {
     "image": image,
     "priorityID": priorityID,
     "isCompleted": isCompleted,
+    "userID": userID,
     "createdAt": createdAt,
   };
 }

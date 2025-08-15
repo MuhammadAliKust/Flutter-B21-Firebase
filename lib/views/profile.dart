@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_b21_firebase/providers/user.dart';
+import 'package:flutter_b21_firebase/views/update_priority.dart';
+import 'package:flutter_b21_firebase/views/update_profile.dart';
 import 'package:provider/provider.dart';
 
 class ProfileDemo extends StatelessWidget {
@@ -27,6 +29,16 @@ class ProfileDemo extends StatelessWidget {
           Text(
             "Address: ${userProvider.getUser().address.toString()}",
             style: TextStyle(fontSize: 30),
+          ),
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UpdateProfileView()),
+              );
+            },
+            child: Text("Edit Profile"),
           ),
         ],
       ),
