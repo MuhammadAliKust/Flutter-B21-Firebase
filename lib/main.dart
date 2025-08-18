@@ -4,10 +4,16 @@ import 'package:flutter_b21_firebase/providers/user.dart';
 import 'package:flutter_b21_firebase/views/get_all_task.dart';
 import 'package:flutter_b21_firebase/views/login.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await Supabase.initialize(
+    url: 'https://eymaipnwgrbsflolrusl.supabase.co',
+    anonKey:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5bWFpcG53Z3Jic2Zsb2xydXNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3NzIxNjUsImV4cCI6MjA1NTM0ODE2NX0.CigLE4_Wgvp3CFfUmxBZTqQHBQH3SL6du6CHU9PLINw',
+  );
   runApp(
     MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => UserProvider())],

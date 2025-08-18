@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_b21_firebase/models/priority.dart';
 import 'package:flutter_b21_firebase/models/task.dart';
 import 'package:flutter_b21_firebase/providers/user.dart';
 import 'package:flutter_b21_firebase/services/priority.dart';
 import 'package:flutter_b21_firebase/services/task.dart';
+import 'package:flutter_b21_firebase/services/upload.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class CreateTaskView extends StatefulWidget {
@@ -19,6 +23,7 @@ class _CreateTaskViewState extends State<CreateTaskView> {
   bool isLoading = false;
   List<PriorityModel> priorityList = [];
   PriorityModel? _selectedPriority;
+  File? image;
 
   @override
   void initState() {
@@ -37,6 +42,21 @@ class _CreateTaskViewState extends State<CreateTaskView> {
       appBar: AppBar(title: Text("Create Task")),
       body: Column(
         children: [
+          InkWell(
+            onTap: () {
+              ImagePicker().pickImage(source: ImageSource.gallery).then((val) {
+                image = File(val!.path);
+                setState(() {});
+              });
+            },
+            child: Container(
+              height: 100,
+              width: double.infinity,
+              color: Colors.blue,
+              child: Center(child: Text("Pick Image")),
+            ),
+          ),
+          if (image != null) Image.file(image!, height: 200),
           TextField(controller: titleController),
           TextField(controller: descriptionController),
           SizedBox(height: 20),
@@ -72,41 +92,47 @@ class _CreateTaskViewState extends State<CreateTaskView> {
                     try {
                       isLoading = true;
                       setState(() {});
-                      await TaskServices()
-                          .createTask(
-                            TaskModel(
-                              title: titleController.text,
-                              description: descriptionController.text,
-                              isCompleted: false,
-                              userID: user.getUser().docId.toString(),
-                              priorityID: _selectedPriority!.docId.toString(),
-                              createdAt: DateTime.now().millisecondsSinceEpoch,
-                            ),
-                          )
-                          .then((val) {
-                            isLoading = false;
-                            setState(() {});
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text("Message"),
-                                  content: Text(
-                                    "Task has been created successfully",
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("Okay"),
+                      await UploadFileServices().uploadImage(image).then((
+                        uploadURL,
+                      ) async {
+                        await TaskServices()
+                            .createTask(
+                              TaskModel(
+                                title: titleController.text,
+                                description: descriptionController.text,
+                                isCompleted: false,
+                                image: uploadURL,
+                                userID: user.getUser().docId.toString(),
+                                priorityID: _selectedPriority!.docId.toString(),
+                                createdAt:
+                                    DateTime.now().millisecondsSinceEpoch,
+                              ),
+                            )
+                            .then((val) {
+                              isLoading = false;
+                              setState(() {});
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("Message"),
+                                    content: Text(
+                                      "Task has been created successfully",
                                     ),
-                                  ],
-                                );
-                              },
-                            );
-                          });
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("Okay"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            });
+                      });
                     } catch (e) {
                       isLoading = false;
                       setState(() {});
