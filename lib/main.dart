@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_b21_firebase/providers/user.dart';
 import 'package:flutter_b21_firebase/views/get_all_task.dart';
 import 'package:flutter_b21_firebase/views/login.dart';
+import 'package:flutter_b21_firebase/views/video_demo.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: LoginView(),
+      home: VideoDemo(),
     );
   }
 }
